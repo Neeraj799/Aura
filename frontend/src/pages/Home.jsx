@@ -16,7 +16,7 @@ import { logout } from '@/api/auth'
 import { setUserData } from '@/redux/userSlice'
 import { Textarea } from '@/components/ui/textarea'
 import { setSelectedAgent } from '@/redux/agentSlice'
-import { chat } from '@/api/chat'
+import { agentChat, chat } from '@/api/chat'
 
 const hideScrollbar =
     "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden";
@@ -77,6 +77,16 @@ const Home = () => {
                 ])
                 return;
             }
+        } else {
+            const result = await agentChat(message, selectedAgent)
+            setMessages((prev) => [
+                ...prev, {
+                    role: "assistant",
+                    content: result?.aiResponse || "something went wrong"
+                }
+            ])
+            return;
+
         }
     }
 
