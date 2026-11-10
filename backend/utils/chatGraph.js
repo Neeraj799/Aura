@@ -18,7 +18,8 @@ const client = new MongoClient(process.env.MONGODB_URI);
 const checkpointer = new MongoDBSaver({ client, dbName: "langgraph" });
 
 const chatNode = async (state) => {
-    const response = await llm.invoke(state.messages)
+    const recentMessages = state.messages.slice(-4)
+    const response = await llm.invoke(recentMessages)
 
     return {
         messages: [response]
